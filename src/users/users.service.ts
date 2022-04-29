@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { AuthUserDto } from '../auth/auth-user.dto';
 import { SearchUsersDto } from './dto/search-users.dto';
 
 @Injectable()
@@ -12,20 +12,33 @@ export class UsersService {
     private readonly repository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.repository.find();
   }
 
-  findAllBy(query: SearchUsersDto): Promise<User[]> {
-    console.log(query);
+  async findAllBy(query: SearchUsersDto): Promise<User[]> {
     return this.repository.find(query);
   }
 
-  findOne(id: number): Promise<User | undefined> {
+  async findOne(id: number): Promise<User> {
     return this.repository.findOneOrFail(id);
   }
 
-  create(user: CreateUserDto): Promise<User> {
+  async findOneByEmail(email: string): Promise<User> {
+    return this.repository.findOneOrFail({ where: { email } });
+  }
+
+  async isEmailInUse(email: string): Promise<boolean> {
+    try {
+      await this.findOneByEmail(email);
+      return true;
+    } catch (e) {
+      if (e instanceof EntityNotFoundError) return false;
+      throw e;
+    }
+  }
+
+  async create(user: AuthUserDto): Promise<User> {
     const entity = this.repository.create(user);
 
     return this.repository.save(entity);

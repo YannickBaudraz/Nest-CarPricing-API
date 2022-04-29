@@ -2,30 +2,22 @@ import {
   AfterInsert,
   AfterRemove,
   AfterUpdate,
-  BeforeInsert,
   Column,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Logger } from '@nestjs/common';
-import * as Bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
-
-  @BeforeInsert()
-  hashPassword() {
-    Logger.log('Hashing password...');
-    this.password = Bcrypt.hashSync(this.password, Bcrypt.genSaltSync(10));
-  }
 
   @AfterInsert()
   afterInsert() {

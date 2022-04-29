@@ -6,3 +6,12 @@ content-type: application/json
   "email": "yannickbaudrazdev@gmail.com",
   "password": "123456asdf"
 }
+
+### Login a user
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+  "email": "yannickbaudrazdev@gmail.com",
+  "password": "123456asdf"
+}
