@@ -7,14 +7,16 @@ import {
   ParseIntPipe,
   Patch,
   Query,
-  Session,
-  UnauthorizedException,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SearchUsersDto } from './dto/search-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dto/user.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './user.entity';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 
 @Controller('users')
 @Serialize(UserDto)
@@ -29,11 +31,9 @@ export class UsersController {
   }
 
   @Get('me')
-  async me(@Session() session) {
-    const sessionUserId = session.userId;
-    if (!sessionUserId)
-      throw new UnauthorizedException('You are not logged in');
-    return this.usersService.findOne(sessionUserId);
+  @UseInterceptors(CurrentUserInterceptor)
+  async me(@CurrentUser() user: User) {
+    return user;
   }
 
   @Get(':id')
