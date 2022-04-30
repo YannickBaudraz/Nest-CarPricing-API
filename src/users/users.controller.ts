@@ -7,6 +7,8 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  Session,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { SearchUsersDto } from './dto/search-users.dto';
@@ -24,6 +26,14 @@ export class UsersController {
     return !searchUsersDto
       ? this.usersService.findAll()
       : this.usersService.findAllBy(searchUsersDto);
+  }
+
+  @Get('me')
+  async me(@Session() session) {
+    const sessionUserId = session.userId;
+    if (!sessionUserId)
+      throw new UnauthorizedException('You are not logged in');
+    return this.usersService.findOne(sessionUserId);
   }
 
   @Get(':id')

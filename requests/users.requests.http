@@ -10,6 +10,9 @@ GET http://localhost:3000/users/9
 ### Try to get a user, by id, that does not exist
 GET http://localhost:3000/users/123984023
 
+### Get current user
+GET http://localhost:3000/users/me
+
 ### Update a user email by id
 PATCH http://localhost:3000/users/9
 content-type: application/json
