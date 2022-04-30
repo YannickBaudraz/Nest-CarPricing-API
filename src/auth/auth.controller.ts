@@ -29,4 +29,9 @@ export class AuthController {
     session.userId = user.id;
     return user;
   }
+
+  @Post('logout')
+  async logout(@Session() session): Promise<void> {
+    session.userId = undefined;
+  }
 }

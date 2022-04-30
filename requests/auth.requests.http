@@ -15,3 +15,6 @@ content-type: application/json
   "email": "yannickbaudrazdev@gmail.com",
   "password": "123456asdf"
 }
+
+### Logout a user
+POST http://localhost:3000/auth/logout
