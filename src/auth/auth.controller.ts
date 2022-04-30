@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Session } from '@nestjs/common';
 import { AuthUserDto } from './auth-user.dto';
 import { User } from '../users/user.entity';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
@@ -11,12 +11,22 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  register(@Body() createUserDto: AuthUserDto): Promise<User> {
-    return this.authService.register(createUserDto);
+  async register(
+    @Body() createUserDto: AuthUserDto,
+    @Session() session,
+  ): Promise<User> {
+    const user = await this.authService.register(createUserDto);
+    session.userId = user.id;
+    return user;
   }
 
   @Post('login')
-  login(@Body() createUserDto: AuthUserDto): Promise<User> {
-    return this.authService.authenticate(createUserDto);
+  async login(
+    @Body() createUserDto: AuthUserDto,
+    @Session() session,
+  ): Promise<User> {
+    const user = await this.authService.authenticate(createUserDto);
+    session.userId = user.id;
+    return user;
   }
 }
