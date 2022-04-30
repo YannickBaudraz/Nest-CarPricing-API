@@ -1,10 +1,24 @@
+import session from 'express-session';
+import sessionFileStore from 'session-file-store';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { TypeOrmFilter } from './filters/type-orm.filter';
 
+const FileStore = sessionFileStore(session);
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: false,
+      store: new FileStore(),
+    }),
+  );
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -13,6 +27,7 @@ async function bootstrap() {
       },
     }),
   );
+
   app.useGlobalFilters(new TypeOrmFilter());
 
   await app.listen(3000);
