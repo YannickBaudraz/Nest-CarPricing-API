@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { AuthUserDto } from './auth-user.dto';
 import * as Bcrypt from 'bcrypt';
@@ -48,6 +48,6 @@ export class AuthService {
 
   private async authorizeRegistration(authDto: AuthUserDto) {
     if (await this.usersService.isEmailInUse(authDto.email))
-      throw new BadRequestException('Email already in use');
+      throw new ConflictException('Email already in use');
   }
 }
