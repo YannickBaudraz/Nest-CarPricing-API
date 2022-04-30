@@ -24,7 +24,7 @@ export class AuthService {
     return await Bcrypt.compare(password, hash);
   }
 
-  async register(authDto: AuthUserDto): Promise<any> {
+  async register(authDto: AuthUserDto): Promise<User> {
     await this.authorizeRegistration(authDto);
     authDto.password = await AuthService.hashPassword(authDto.password);
     return await this.usersService.create(authDto);
