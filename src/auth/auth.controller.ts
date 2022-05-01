@@ -12,20 +12,20 @@ export class AuthController {
 
   @Post('register')
   async register(
-    @Body() createUserDto: AuthUserDto,
+    @Body() registerUserDto: AuthUserDto,
     @Session() session,
   ): Promise<User> {
-    const user = await this.authService.register(createUserDto);
+    const user = await this.authService.register(registerUserDto);
     session.userId = user.id;
     return user;
   }
 
   @Post('login')
   async login(
-    @Body() createUserDto: AuthUserDto,
+    @Body() loginUserDto: AuthUserDto,
     @Session() session,
   ): Promise<User> {
-    const user = await this.authService.authenticate(createUserDto);
+    const user = await this.authService.authenticate(loginUserDto);
     session.userId = user.id;
     return user;
   }
