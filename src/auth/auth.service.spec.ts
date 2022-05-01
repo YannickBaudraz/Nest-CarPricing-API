@@ -6,6 +6,8 @@ import { AuthUserDto } from './auth-user.dto';
 import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { ConflictException } from '@nestjs/common';
+import { EntityNotFoundError } from 'typeorm';
+import { InvalidCredentialsException } from './invalid-credentials.exception';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -39,16 +41,57 @@ describe('AuthService', () => {
       expect(isHashFromPassword).toBeTruthy();
     });
 
-    it('should throw an error if the email is already in use', () => {
+    it('should throw an error if the email is already in use', async () => {
       expect.hasAssertions();
 
       const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
       usersServiceMock.create.mockResolvedValue(Promise.resolve(dto as User));
       usersServiceMock.isEmailInUse.mockResolvedValue(true);
 
-      authService.register(dto).catch((error: ConflictException) => {
+      await authService.register(dto).catch((error) => {
         expect(error).toBeInstanceOf(ConflictException);
         expect(error.message).toBe('Email already in use');
+      });
+    });
+  });
+
+  describe('authenticate', () => {
+    it('should return a user if credentials are valid', async () => {
+      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
+      usersServiceMock.findOneByEmail.mockResolvedValue({
+        ...dto,
+        password: bcrypt.hashSync(dto.password, 10),
+      } as User);
+
+      const user: User = await authService.authenticate(dto);
+
+      expect(user).toBeDefined();
+      expect(user.email).toBe(dto.email);
+    });
+
+    it('should throw an error if the user is not found', async () => {
+      expect.hasAssertions();
+
+      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
+      const entityNotFoundError = new EntityNotFoundError('', {});
+      usersServiceMock.findOneByEmail.mockRejectedValue(entityNotFoundError);
+
+      await authService.authenticate(dto).catch((error) => {
+        expect(error).toBeInstanceOf(InvalidCredentialsException);
+      });
+    });
+
+    it('should throw an error if the password is invalid', async () => {
+      expect.hasAssertions();
+
+      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
+      usersServiceMock.findOneByEmail.mockResolvedValue({
+        ...dto,
+        password: dto.password + 'invalid',
+      } as User);
+
+      await authService.authenticate(dto).catch((error) => {
+        expect(error).toBeInstanceOf(InvalidCredentialsException);
       });
     });
   });
