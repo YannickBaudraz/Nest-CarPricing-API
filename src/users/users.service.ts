@@ -20,8 +20,8 @@ export class UsersService {
     return this.repository.find(query);
   }
 
-  async findOne(id: number): Promise<User> {
-    return this.repository.findOneOrFail(id);
+  async findOne(userId: number): Promise<User> {
+    return this.repository.findOneOrFail(userId);
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -44,14 +44,14 @@ export class UsersService {
     return this.repository.save(entity);
   }
 
-  async update(id: number, partialUser: Partial<User>): Promise<User> {
-    const user = this.repository.merge(await this.findOne(id), partialUser);
+  async update(userId: number, partialUser: Partial<User>): Promise<User> {
+    const user = this.repository.merge(await this.findOne(userId), partialUser);
 
     return this.repository.save(user);
   }
 
-  async remove(id: number): Promise<User> {
-    const user = await this.findOne(id);
+  async remove(userId: number): Promise<User> {
+    const user = await this.findOne(userId);
 
     return this.repository.remove(user);
   }
