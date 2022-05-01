@@ -12,6 +12,7 @@ import { InvalidCredentialsException } from './invalid-credentials.exception';
 describe('AuthService', () => {
   let authService: AuthService;
   const usersServiceMock = createMock<UsersService>();
+  let dto: AuthUserDto;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,6 +23,8 @@ describe('AuthService', () => {
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
+
+    dto = { email: 'test@test.test', password: 'test' };
   });
 
   it('should be defined', () => {
@@ -30,8 +33,7 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should hash password with bcrypt', async () => {
-      const password = 'test';
-      const dto: AuthUserDto = { email: 'test@test.test', password };
+      const password = dto.password;
       usersServiceMock.create.mockResolvedValue(Promise.resolve(dto as User));
       usersServiceMock.isEmailInUse.mockResolvedValue(false);
 
@@ -44,7 +46,6 @@ describe('AuthService', () => {
     it('should throw an error if the email is already in use', async () => {
       expect.hasAssertions();
 
-      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
       usersServiceMock.create.mockResolvedValue(Promise.resolve(dto as User));
       usersServiceMock.isEmailInUse.mockResolvedValue(true);
 
@@ -57,7 +58,6 @@ describe('AuthService', () => {
 
   describe('authenticate', () => {
     it('should return a user if credentials are valid', async () => {
-      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
       usersServiceMock.findOneByEmail.mockResolvedValue({
         ...dto,
         password: bcrypt.hashSync(dto.password, 10),
@@ -72,7 +72,6 @@ describe('AuthService', () => {
     it('should throw an error if the user is not found', async () => {
       expect.hasAssertions();
 
-      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
       const entityNotFoundError = new EntityNotFoundError('', {});
       usersServiceMock.findOneByEmail.mockRejectedValue(entityNotFoundError);
 
@@ -84,7 +83,6 @@ describe('AuthService', () => {
     it('should throw an error if the password is invalid', async () => {
       expect.hasAssertions();
 
-      const dto: AuthUserDto = { email: 'test@test.test', password: 'test' };
       usersServiceMock.findOneByEmail.mockResolvedValue({
         ...dto,
         password: dto.password + 'invalid',
