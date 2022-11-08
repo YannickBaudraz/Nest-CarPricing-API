@@ -11,6 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 describe('UsersService', () => {
   let service: UsersService;
   const repositoryMock = createMock<Repository<User>>();
+  let userTest: User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,10 +22,12 @@ describe('UsersService', () => {
     }).compile();
 
     service = module.get<UsersService>(UsersService);
+
+    userTest = { id: 1, email: 'test@gmail.com', password: 'test' } as User;
   });
 
   it('should find all users', async () => {
-    const users = [createUser(), createUser(), createUser()];
+    const users = [userTest, userTest, userTest];
     repositoryMock.find.mockResolvedValue(users);
 
     const result = await service.findAll();
@@ -34,7 +37,7 @@ describe('UsersService', () => {
   });
 
   it('should find all users by search', async () => {
-    const users = [createUser(), createUser()];
+    const users = [userTest, userTest];
     const search: SearchUsersDto = {
       email: 'test@mail.com',
       limit: 2,
@@ -48,7 +51,7 @@ describe('UsersService', () => {
   });
 
   it('should find a user by id', async () => {
-    const user = createUser();
+    const user = userTest;
     repositoryMock.findOneOrFail.mockResolvedValue(user);
 
     const result = await service.findOne(1);
@@ -65,7 +68,7 @@ describe('UsersService', () => {
   });
 
   it('should find a user by email', async () => {
-    const user = createUser();
+    const user = userTest;
     repositoryMock.findOneOrFail.mockResolvedValue(user);
 
     const result = await service.findOneByEmail('test@gmail.com');
@@ -75,7 +78,7 @@ describe('UsersService', () => {
   });
 
   it('should say if email is in use', async () => {
-    repositoryMock.findOneOrFail.mockResolvedValue(createUser());
+    repositoryMock.findOneOrFail.mockResolvedValue(userTest);
 
     const result = await service.isEmailInUse('test.@gmail.com');
 
@@ -93,7 +96,7 @@ describe('UsersService', () => {
   });
 
   it('should create a user', async () => {
-    const user = createUser();
+    const user = userTest;
     const authUserDto: AuthUserDto = { ...user };
     repositoryMock.create.mockReturnValue(user);
     repositoryMock.save.mockResolvedValue(user);
@@ -106,7 +109,7 @@ describe('UsersService', () => {
   });
 
   it('should update a user', async () => {
-    const user = createUser();
+    const user = userTest;
     repositoryMock.findOne.mockResolvedValue(user);
     const updateUserDto: UpdateUserDto = { email: 'newEmail@mail.com' };
     const updatedUser: User = { ...user, ...updateUserDto } as User;
@@ -122,7 +125,7 @@ describe('UsersService', () => {
   });
 
   it('should remove a user', async () => {
-    const user = createUser();
+    const user = userTest;
     repositoryMock.findOne.mockResolvedValue(user);
     repositoryMock.remove.mockResolvedValue(user);
 
@@ -133,11 +136,3 @@ describe('UsersService', () => {
     expect(repositoryMock.remove).toHaveBeenCalledTimes(1);
   });
 });
-
-function createUser(): User {
-  const user = new User();
-  user.id = 1;
-  user.email = 'test@gmail.com';
-  user.password = 'test';
-  return user;
-}
