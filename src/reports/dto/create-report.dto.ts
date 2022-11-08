@@ -23,11 +23,11 @@ export class CreateReportDto {
   @Max(new Date().getFullYear())
   year: number;
 
-  @IsLongitude()
-  longitude: number;
-
   @IsLatitude()
   latitude: number;
+
+  @IsLongitude()
+  longitude: number;
 
   @UnsignedMaxMillion()
   mileage: number;

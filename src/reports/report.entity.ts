@@ -18,10 +18,10 @@ export class Report {
   year: number;
 
   @Column()
-  longitude: number;
+  latitude: number;
 
   @Column()
-  latitude: number;
+  longitude: number;
 
   @Column()
   mileage: number;

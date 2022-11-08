@@ -37,11 +37,9 @@ describe('AuthController (e2e)', () => {
       .send({ email: expectedEmail, password: '123456asdf' })
       .expect(201);
 
-    const cookie = res.get('Set-Cookie');
-
     const { body } = await request(app.getHttpServer())
       .get('/users/me')
-      .set('Cookie', cookie)
+      .set('Cookie', res.get('Set-Cookie'))
       .expect(200);
 
     expect(body.email).toEqual(expectedEmail);

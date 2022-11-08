@@ -1,16 +1,15 @@
-import {
-  Body,
-  Controller,
-  NotImplementedException,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
+import { ReportsService } from './reports.service';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('reports')
 export class ReportsController {
+  constructor(private reportsService: ReportsService) {}
+
   @Post()
+  @UseGuards(AuthGuard)
   store(@Body() body: CreateReportDto) {
-    console.log(body);
-    throw new NotImplementedException();
+    return this.reportsService.create(body);
   }
 }

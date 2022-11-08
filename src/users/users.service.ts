@@ -9,8 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private readonly repository: Repository<User>,
+    @InjectRepository(User) private readonly repository: Repository<User>,
   ) {}
 
   async findAll(): Promise<User[]> {
