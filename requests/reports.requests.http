@@ -1,0 +1,13 @@
+### Crete a new report
+POST localhost:3000/reports
+Content-Type: application/json
+
+{
+  "price": 100,
+  "make": "Audi",
+  "model": "A4",
+  "year": 2010,
+  "longitude": 100,
+  "latitude": 100,
+  "mileage": 10000
+}
