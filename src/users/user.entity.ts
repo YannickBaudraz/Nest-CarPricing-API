@@ -4,9 +4,11 @@ import {
   AfterUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Logger } from '@nestjs/common';
+import { Report } from '../reports/report.entity';
 
 @Entity('users')
 export class User {
@@ -18,6 +20,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
   @AfterInsert()
   afterInsert() {
