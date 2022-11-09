@@ -11,3 +11,11 @@ Content-Type: application/json
   "longitude": 6.5833,
   "mileage": 10000
 }
+
+### Approve a report
+PATCH localhost:3000/reports/1/approve
+Content-Type: application/json
+
+{
+  "approved": true
+}

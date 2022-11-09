@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AuthModule } from '../src/auth/auth.module';
+import { register } from './auth-helper';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -32,10 +33,7 @@ describe('AuthController (e2e)', () => {
   it('register a new user and get the current user', async () => {
     const expectedEmail = '123456asdf@gmail.com';
 
-    const res = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send({ email: expectedEmail, password: '123456asdf' })
-      .expect(201);
+    const res = await register(app, expectedEmail, '123456asdf');
 
     const { body } = await request(app.getHttpServer())
       .get('/users/me')

@@ -1,15 +1,14 @@
 import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import session from 'express-session';
 import sessionFileStore from 'session-file-store';
 import { TypeOrmFilter } from './filters/type-orm.filter';
-import { LoggerOptions } from 'typeorm';
+import { DatabaseModule } from './database/database.module';
 
 const FileStore = sessionFileStore(session);
 
@@ -19,27 +18,7 @@ const FileStore = sessionFileStore(session);
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        let logging: LoggerOptions;
-        try {
-          logging = JSON.parse(config.get('DB_LOGGING'));
-        } catch (error) {
-          logging = config.get('DB_LOGGING');
-        }
-
-        return {
-          type: 'sqlite',
-          database: config.get('DB_NAME'),
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: config.get('DB_SYNC'),
-          logger: config.get('DB_LOGGER'),
-          logging,
-          keepConnectionAlive: config.get('DB_KEEP_ALIVE'),
-        };
-      },
-    }),
+    DatabaseModule,
     UsersModule,
     ReportsModule,
     AuthModule,
