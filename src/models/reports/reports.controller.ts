@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -16,6 +18,7 @@ import { ReportDto } from './dto/report.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ApproveReportDto } from './dto/approve-report.dto';
 import { AdminGuard } from '../../guards/admin.guard';
+import { GetEstimateDto } from './dto/get-estimate.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -35,5 +38,11 @@ export class ReportsController {
     @Body() approveReportDto: ApproveReportDto,
   ) {
     return this.reportsService.changeApproval(1, approveReportDto);
+  }
+
+  @Get('estimate')
+  getEstimate(@Query() query: GetEstimateDto) {
+    console.log(query);
+    return query;
   }
 }

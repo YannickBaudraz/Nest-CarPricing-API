@@ -19,3 +19,6 @@ Content-Type: application/json
 {
   "approved": true
 }
+
+### Get an estimate for a vehicle
+GET localhost:3000/reports/estimate?make=Audi&model=A4&year=2010&mileage=10000&latitude=46.5333&longitude=6.5833
