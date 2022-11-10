@@ -15,6 +15,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: true })
+  isAdmin: boolean;
+
   @Column({ unique: true })
   email: string;
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthUserDto } from '../auth/auth-user.dto';
+import { AuthUserDto } from '../../auth/auth-user.dto';
 import { SearchUsersDto } from './dto/search-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

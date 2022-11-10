@@ -5,5 +5,8 @@ export class UserDto {
   id: number;
 
   @Expose()
+  isAdmin: boolean;
+
+  @Expose()
   email: string;
 }

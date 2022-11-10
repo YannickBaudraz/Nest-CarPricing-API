@@ -6,7 +6,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { UnsignedMaxMillion } from '../../validation/decorators/unsigned-max-million.decorator';
+import { UnsignedMaxMillion } from '../../../validation/decorators/unsigned-max-million.decorator';
 
 export class CreateReportDto {
   @UnsignedMaxMillion()

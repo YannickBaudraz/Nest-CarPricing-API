@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../models/users/users.service';
 import { AuthUserDto } from './auth-user.dto';
-import { User } from '../users/user.entity';
+import { User } from '../models/users/user.entity';
 import { InvalidCredentialsException } from './invalid-credentials.exception';
 import { EntityNotFoundError } from 'typeorm';
 import { PasswordHelper } from '../helper/password.helper';
