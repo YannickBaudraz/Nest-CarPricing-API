@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { ReportsModule } from '../src/reports/reports.module';
-import { CreateReportDto } from '../src/reports/dto/create-report.dto';
+import { ReportsModule } from '../src/models/reports/reports.module';
+import { CreateReportDto } from '../src/models/reports/dto/create-report.dto';
 import request from 'supertest';
 import { register } from './auth-helper';
 
@@ -19,7 +19,7 @@ describe('ReportController (e2e)', function () {
   });
 
   it('make a post request to /reports, when the request body is invalid, return a bad request', async () => {
-    const createReportDto: CreateReportDto = {} as CreateReportDto;
+    const createReportDto = {} as CreateReportDto;
     const expectedErrorMessage = [
       'price must be a number conforming to the specified constraints',
       'price must not be less than 0',

@@ -3,13 +3,13 @@ POST localhost:3000/reports
 Content-Type: application/json
 
 {
-  "price": 100,
-  "make": "Audi",
-  "model": "A4",
+  "price": 150000,
+  "make": "audi",
+  "model": "a4",
   "year": 2010,
   "latitude": 46.5333,
   "longitude": 6.5833,
-  "mileage": 10000
+  "mileage": 30000
 }
 
 ### Approve a report
@@ -20,5 +20,5 @@ Content-Type: application/json
   "approved": true
 }
 
-### Get an estimate for a vehicle
-GET localhost:3000/reports/estimate?make=Audi&model=A4&year=2010&mileage=10000&latitude=46.5333&longitude=6.5833
+### Get an estimate of a vehicle
+GET localhost:3000/reports/estimate?make=audi&model=a4&year=2010&mileage=50000&latitude=46.5333&longitude=6.5833
