@@ -52,12 +52,14 @@ const FileStore = sessionFileStore(session);
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {}
+
   // noinspection JSUnusedGlobalSymbols
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         session({
-          secret: 'my-secret',
+          secret: this.configService.get('SESSION_SECRET'),
           resave: false,
           saveUninitialized: false,
           store: new FileStore(),
