@@ -5,7 +5,7 @@ import { User } from './user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { createMock } from '@golevelup/ts-jest';
 import { SearchUsersDto } from './dto/search-users.dto';
-import { AuthUserDto } from '../auth/auth-user.dto';
+import { AuthUserDto } from '../../auth/auth-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UsersService', () => {

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../models/users/users.service';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthUserDto } from './auth-user.dto';
-import { User } from '../users/user.entity';
+import { User } from '../models/users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { ConflictException } from '@nestjs/common';
 import { EntityNotFoundError } from 'typeorm';

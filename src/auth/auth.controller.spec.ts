@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from './auth.service';
-import { User } from '../users/user.entity';
+import { User } from '../models/users/user.entity';
 import { AuthUserDto } from './auth-user.dto';
 
 describe('AuthController', () => {
