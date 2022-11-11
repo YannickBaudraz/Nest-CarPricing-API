@@ -20,7 +20,7 @@ export class ReportsService {
   }
 
   async changeApproval(id: number, approveReportDto: ApproveReportDto) {
-    const report = await this.repository.findOneOrFail(id);
+    const report = await this.repository.findOneOrFail({ where: { id } });
     report.approved = approveReportDto.approved;
 
     return this.repository.save(report);

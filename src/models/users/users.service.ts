@@ -17,11 +17,11 @@ export class UsersService {
   }
 
   async findAllBy(query: SearchUsersDto): Promise<User[]> {
-    return this.repository.find(query);
+    return this.repository.find({ where: { email: query.email } });
   }
 
   async findOne(userId: number): Promise<User> {
-    return this.repository.findOneOrFail(userId);
+    return this.repository.findOneOrFail({ where: { id: userId } });
   }
 
   async findOneByEmail(email: string): Promise<User> {
