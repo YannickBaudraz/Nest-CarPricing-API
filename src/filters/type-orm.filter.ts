@@ -2,48 +2,36 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
+  HttpException,
   HttpStatus,
   Logger,
 } from '@nestjs/common';
 import { EntityNotFoundError, QueryFailedError, TypeORMError } from 'typeorm';
-import { Response } from 'express';
-
-interface ResponseBody {
-  statusCode: number;
-  message: string;
-  error: string;
-}
 
 @Catch(TypeORMError)
-export class TypeOrmFilter implements ExceptionFilter {
-  private static sendResponse(response: Response, responseBody: ResponseBody) {
-    response.status(responseBody.statusCode).json({
-      statusCode: responseBody.statusCode,
-      message: responseBody.message,
-    });
-  }
-
-  catch(exception: TypeORMError, host: ArgumentsHost) {
+export class TypeOrmFilter<T extends TypeORMError> implements ExceptionFilter {
+  catch(exception: T, host: ArgumentsHost) {
     Logger.error(exception.message, this.constructor.name);
 
-    const response = host.switchToHttp().getResponse<Response>();
-    const responseBody: ResponseBody = {
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: exception.message,
-      error: 'Internal Server Error',
-    };
-
+    let description = 'Internal Server Error';
+    let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     switch (exception.constructor) {
       case EntityNotFoundError:
-        responseBody.statusCode = HttpStatus.NOT_FOUND;
-        responseBody.error = 'Not Found';
+        statusCode = HttpStatus.NOT_FOUND;
+        description = 'Not Found';
         break;
       case QueryFailedError:
-        responseBody.statusCode = HttpStatus.BAD_REQUEST;
-        responseBody.error = 'Query Failed';
+        statusCode = HttpStatus.BAD_REQUEST;
+        description = 'Query Failed';
         break;
     }
 
-    TypeOrmFilter.sendResponse(response, responseBody);
+    host
+      .switchToHttp()
+      .getResponse()
+      .status(statusCode)
+      .json(
+        HttpException.createBody(exception.message, description, statusCode),
+      );
   }
 }
