@@ -15,8 +15,10 @@ export default registerAs('database', () => {
     database: process.env.DB_NAME,
     entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
     migrations: [join(__dirname, './migrations/*{.ts,.js}')],
-    synchronize: Boolean(process.env.DB_SYNC),
+    migrationsRun: process.env.DB_MIGRATIONS_RUN === 'true',
+    synchronize: process.env.DB_SYNC === 'true',
     logger: process.env.DB_LOGGER as DataSourceOptions['logger'],
     logging,
+    keepConnectionAlive: process.env.DB_KEEP_ALIVE === 'true',
   } as DataSourceOptions;
 });

@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { AuthModule } from '../src/auth/auth.module';
 import { register } from './auth-helper';
+import { deleteDbFile } from './test-helper';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -41,5 +42,10 @@ describe('AuthController (e2e)', () => {
       .expect(200);
 
     expect(body.email).toEqual(expectedEmail);
+  });
+
+  afterEach(async () => {
+    await app.close();
+    deleteDbFile();
   });
 });

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { deleteDbFile } from './test-helper';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -20,5 +21,10 @@ describe('AppController (e2e)', () => {
       .get('/')
       .expect(200)
       .expect('Hello World!');
+  });
+
+  afterEach(async () => {
+    await app.close();
+    deleteDbFile();
   });
 });

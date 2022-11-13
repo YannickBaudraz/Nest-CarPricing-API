@@ -5,6 +5,7 @@ import { ReportsModule } from '../src/models/reports/reports.module';
 import { CreateReportDto } from '../src/models/reports/dto/create-report.dto';
 import request from 'supertest';
 import { register } from './auth-helper';
+import { deleteDbFile } from './test-helper';
 
 describe('ReportController (e2e)', function () {
   let app: INestApplication;
@@ -47,5 +48,10 @@ describe('ReportController (e2e)', function () {
       .then((response) =>
         expect(response.body.message).toEqual(expectedErrorMessage),
       );
+  });
+
+  afterEach(async () => {
+    await app.close();
+    deleteDbFile();
   });
 });
