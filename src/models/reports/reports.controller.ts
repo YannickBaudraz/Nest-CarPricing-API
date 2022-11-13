@@ -18,6 +18,7 @@ import { ReportDto } from './dto/report.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { ApproveReportDto } from './dto/approve-report.dto';
 import { AdminGuard } from '../../guards/admin.guard';
+import { GetEstimateDto } from './dto/get-estimate.dto';
 import { EstimateDto } from './dto/estimate.dto';
 
 @Controller('reports')
@@ -33,6 +34,7 @@ export class ReportsController {
 
   @Patch(':id/approve')
   @UseGuards(AdminGuard)
+  @Serialize(ReportDto)
   approve(
     @Param('id', ParseIntPipe) id: number,
     @Body() approveReportDto: ApproveReportDto,
@@ -41,7 +43,8 @@ export class ReportsController {
   }
 
   @Get('estimate')
-  getEstimate(@Query() query: EstimateDto) {
+  @Serialize(EstimateDto)
+  getEstimate(@Query() query: GetEstimateDto) {
     return this.reportsService.getEstimate(query);
   }
 }

@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
 import { User } from '../users/user.entity';
 import { ApproveReportDto } from './dto/approve-report.dto';
-import { EstimateDto } from './dto/estimate.dto';
+import { GetEstimateDto } from './dto/get-estimate.dto';
 
 @Injectable()
 export class ReportsService {
@@ -20,13 +20,16 @@ export class ReportsService {
   }
 
   async changeApproval(id: number, approveReportDto: ApproveReportDto) {
-    const report = await this.repository.findOneOrFail({ where: { id } });
+    const report = await this.repository.findOneOrFail({
+      where: { id },
+      relations: ['user'],
+    });
     report.approved = approveReportDto.approved;
 
     return this.repository.save(report);
   }
 
-  getEstimate(estimateDto: EstimateDto) {
+  getEstimate(estimateDto: GetEstimateDto) {
     const { make, model, latitude, longitude, year, mileage } = estimateDto;
     return this.repository
       .createQueryBuilder()
