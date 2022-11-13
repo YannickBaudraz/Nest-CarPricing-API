@@ -18,8 +18,5 @@ export default registerAs('database', () => {
     synchronize: Boolean(process.env.DB_SYNC),
     logger: process.env.DB_LOGGER as DataSourceOptions['logger'],
     logging,
-    cli: {
-      migrationsDir: 'src/database/migrations',
-    },
   } as DataSourceOptions;
 });
