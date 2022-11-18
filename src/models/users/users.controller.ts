@@ -22,24 +22,24 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async index(@Query() searchUsersDto?: SearchUsersDto) {
+  index(@Query() searchUsersDto?: SearchUsersDto) {
     return !searchUsersDto
       ? this.usersService.findAll()
       : this.usersService.findAllBy(searchUsersDto);
   }
 
   @Get('me')
-  async me(@CurrentUser() currentUser: User) {
+  me(@CurrentUser() currentUser: User) {
     return currentUser;
   }
 
   @Get(':id')
-  async show(@Param('id', ParseIntPipe) userId: number) {
+  show(@Param('id', ParseIntPipe) userId: number) {
     return this.usersService.findOne(userId);
   }
 
   @Patch(':id')
-  async update(
+  update(
     @Param('id', ParseIntPipe) userId: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -47,7 +47,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async destroy(@Param('id', ParseIntPipe) userId: number) {
+  destroy(@Param('id', ParseIntPipe) userId: number) {
     return this.usersService.remove(userId);
   }
 }

@@ -20,10 +20,16 @@ import { ApproveReportDto } from './dto/approve-report.dto';
 import { AdminGuard } from '../../guards/admin.guard';
 import { GetEstimateDto } from './dto/get-estimate.dto';
 import { EstimateDto } from './dto/estimate.dto';
+import { SearchReportsDto } from './dto/search-reports.dto';
 
 @Controller('reports')
 export class ReportsController {
   constructor(private reportsService: ReportsService) {}
+
+  @Get()
+  index(@Query() searchReportsDto: SearchReportsDto) {
+    return this.reportsService.findAllBy(searchReportsDto);
+  }
 
   @Post()
   @UseGuards(AuthGuard)

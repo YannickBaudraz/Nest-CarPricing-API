@@ -1,5 +1,5 @@
 import { IsEmail, IsNumber, IsOptional } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class SearchUsersDto {
   @IsEmail()
@@ -9,6 +9,5 @@ export class SearchUsersDto {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  @Expose({ name: 'take', toPlainOnly: true })
   limit?: number;
 }
