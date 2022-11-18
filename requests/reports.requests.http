@@ -1,3 +1,6 @@
+### Get all reports for a specific user
+GET localhost:3000/reports?userId=1
+
 ### Crete a new report
 POST localhost:3000/reports
 Content-Type: application/json
@@ -21,4 +24,4 @@ Content-Type: application/json
 }
 
 ### Get an estimate of a vehicle
-GET localhost:3000/reports/estimate?make=audi&model=a4&year=2010&mileage=50000&latitude=46.5333&longitude=6.5833
+GET localhost:3000/reports/estimate?make=Ausssdi&model=A8&year=2010&mileage=50000&latitude=40.0&longitude=105.0
