@@ -1,10 +1,10 @@
-<p style="text-align: center">
+<p align="center">
   <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-<p style="text-align: center">A progressive <a href="https://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+<p align="center">A progressive <a href="https://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
-<p style="text-align: center">
+<p align="center">
     <a href="https://github.com/yannickcpnv/Nest-CarPricing-API/actions/workflows/node.js.yml" target="_blank">
         <img src="https://github.com/yannickcpnv/Nest-CarPricing-API/actions/workflows/node.js.yml/badge.svg" alt="Node.js CI" />
     </a>
